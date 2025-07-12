@@ -23,24 +23,31 @@ const QUESTIONS = [
   },
   {
     id: 3,
-    question: "I often doubt my ability to learn new tasks at work. ",
+    question: " Taking everything into account, how much do you feel your relationship needs improvement?",
     type: "buttons",
-    options: ['Not at all true', 'Slightly true', 'Moderately true', 'Mostly true', 'Completely true'],
+    options: ['Not at all', 'A little', 'Quite a bit', 'Very much'],
     field: "q1"
   },
   {
     id: 4,
-    question: "I struggle to solve problems that come up in my job.",
+    question: "How true is it that you feel emotionally close to your partner and have a warm, comfortable connection? ",
     type: "buttons",
-    options: ['Not at all true', 'Slightly true', 'Moderately true', 'Mostly true', 'Completely true'],
+    options: ['Not at all True', 'Completely True'],
     field: "q2"
   },
   {
     id: 5,
-    question: "I find it difficult to work well as part of a team.",
+    question: "How rewarding and meaningful does your relationship feel to you personally? ",
     type: "buttons",
-    options:['Not at all true', 'Slightly true', 'Moderately true', 'Mostly true', 'Completely true'],
+    options: ['Not at all True', 'Completely True'],
     field: "q3"
+  },
+  {
+    id: 6,
+    question: "Overall, how satisfied are you with the way things are in your relationship?  ",
+    type: "buttons",
+    options: ['Not at all True', 'Completely True'],
+    field: "q4"
   }
 ];
 
@@ -75,7 +82,7 @@ function App() {
     e.preventDefault();
     setSubmissionState({ isSubmitting: true, error: null });
 
-    const url = "https://script.google.com/macros/s/AKfycbzFzazwi05qVef9h1g0h1CSF2ymdpegxSlSL2woPfvgPxww9OJBmyz1YM1ML7fTUU534A/exec";
+    const url = "https://script.google.com/macros/s/AKfycbzC4ZBfM4lk6G-ozUou7UkRgQ5xZyLLQ8kT0CIfSNlQFkG2QpD1JiDriilg6vKEHFzCxA/exec";
 
     try {
       const response = await fetch(url, {
@@ -89,7 +96,8 @@ function App() {
           Gender: formData.gender,
           Question1: formData.q1,
           Question2: formData.q2,
-          Question3: formData.q3
+          Question3: formData.q3,
+          Question4:formData.q4
         })
       });
 
