@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import 'react-phone-input-2/lib/style.css';
+import PhoneInput from 'react-phone-input-2';
 import './App.css';
 
 const QUESTIONS = [
@@ -16,35 +18,41 @@ const QUESTIONS = [
   },
   {
     id: 2,
+    question: "Phone Number",
+    type: "phone",
+    field: "phone"
+  },
+  {
+    id: 3,
     question: "What is your gender?",
     type: "buttons",
     options: ["Male", "Female", "Other"],
     field: "gender"
   },
   {
-    id: 3,
-    question: " Taking everything into account, how much do you feel your relationship needs improvement?",
+    id: 4,
+    question: "How much do you feel your relationship needs improvement?",
     type: "buttons",
     options: ['Not at all', 'A little', 'Quite a bit', 'Very much'],
     field: "q1"
   },
   {
-    id: 4,
-    question: "How true is it that you feel emotionally close to your partner and have a warm, comfortable connection? ",
+    id: 5,
+    question: "How true is it that you feel emotionally close to your partner?",
     type: "buttons",
     options: ['Not at all True', 'Completely True'],
     field: "q2"
   },
   {
-    id: 5,
-    question: "How rewarding and meaningful does your relationship feel to you personally? ",
+    id: 6,
+    question: "How rewarding does your relationship feel to you?",
     type: "buttons",
     options: ['Not at all True', 'Completely True'],
     field: "q3"
   },
   {
-    id: 6,
-    question: "Overall, how satisfied are you with the way things are in your relationship?  ",
+    id: 7,
+    question: "Overall, how satisfied are you with your relationship?",
     type: "buttons",
     options: ['Not at all True', 'Completely True'],
     field: "q4"
@@ -82,7 +90,7 @@ function App() {
     e.preventDefault();
     setSubmissionState({ isSubmitting: true, error: null });
 
-    const url = "https://script.google.com/macros/s/AKfycbzC4ZBfM4lk6G-ozUou7UkRgQ5xZyLLQ8kT0CIfSNlQFkG2QpD1JiDriilg6vKEHFzCxA/exec";
+    const url = "https://script.google.com/macros/s/AKfycbwTSPx1WhAfWwY8ea2ccbmYH538SWrYllWn7DHoz7c1QWNd7hNf94zOHMvoAgyVLeEEJw/exec";
 
     try {
       const response = await fetch(url, {
@@ -93,33 +101,29 @@ function App() {
         body: new URLSearchParams({
           Name: formData.name,
           Age: formData.age,
+          Phone: formData.phone,
           Gender: formData.gender,
           Question1: formData.q1,
           Question2: formData.q2,
           Question3: formData.q3,
-          Question4:formData.q4
+          Question4: formData.q4
         })
       });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
 
       const result = await response.json();
 
       if (result.status === "success") {
         window.open("https://www.crink.app/book-therapy", "_blank");
-     
-  // Reset form
-  setFormData(
-    QUESTIONS.reduce((acc, question) => {
-      acc[question.field] = '';
-      return acc;
-    }, {})
-  );
-  setCurrentQuestionIndex(0);
-  setSubmissionState({ isSubmitting: false, error: null });
-     
+
+        // Reset form
+        setFormData(
+          QUESTIONS.reduce((acc, question) => {
+            acc[question.field] = '';
+            return acc;
+          }, {})
+        );
+        setCurrentQuestionIndex(0);
+        setSubmissionState({ isSubmitting: false, error: null });
       } else {
         throw new Error(result.message || "Submission failed");
       }
@@ -135,10 +139,11 @@ function App() {
   const renderQuestion = () => {
     switch (currentQuestion.type) {
       case "text1":
+      case "text2":
         return (
           <div className="input-container">
             <input
-              type="text"
+              type={currentQuestion.type === "text2" ? "number" : "text"}
               className="text-input"
               value={formData[currentQuestion.field]}
               onChange={(e) => handleInputChange(currentQuestion.field, e.target.value)}
@@ -146,15 +151,15 @@ function App() {
             />
           </div>
         );
-         case "text2":
+       case "phone":
         return (
           <div className="input-container">
-            <input
-              type="number"
-              className="text-input"
+            <PhoneInput
+              country={'in'}
               value={formData[currentQuestion.field]}
-              onChange={(e) => handleInputChange(currentQuestion.field, e.target.value)}
-              placeholder="Type your answer"
+              onChange={(phone) => handleInputChange(currentQuestion.field, phone)}
+              inputClass="text-input"
+              inputStyle={{ width: '100%' }}
             />
           </div>
         );
