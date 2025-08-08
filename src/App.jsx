@@ -113,7 +113,7 @@ function App() {
       const result = await response.json();
 
       if (result.status === "success") {
-        window.open("https://rzp.io/rzp/onetime-consultation", "_blank");
+        window.open("https://rzp.io/rzp/onetime-consultation", "_self");
 
         // Reset form
         setFormData(
