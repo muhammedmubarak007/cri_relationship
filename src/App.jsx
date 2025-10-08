@@ -21,37 +21,42 @@ const QUESTIONS = [
     question: "Phone Number",
     type: "phone",
     field: "phone"
+  }, {
+    id: 3,
+    question: "what is your email address?",
+    type: "email",
+    field: "email"
   },
   {
-    id: 3,
+    id: 4,
     question: "What is your gender?",
     type: "buttons",
     options: ["Male", "Female", "Other"],
     field: "gender"
   },
   {
-    id: 4,
+    id: 5,
     question: "How much do you feel your relationship needs improvement?",
     type: "buttons",
     options: ['Not at all', 'A little', 'Quite a bit', 'Very much'],
     field: "q1"
   },
   {
-    id: 5,
+    id: 6,
     question: "How true is it that you feel emotionally close to your partner?",
     type: "buttons",
     options: ['Not at all True', 'Completely True'],
     field: "q2"
   },
   {
-    id: 6,
+    id: 7,
     question: "How rewarding does your relationship feel to you?",
     type: "buttons",
     options: ['Not at all True', 'Completely True'],
     field: "q3"
   },
   {
-    id: 7,
+    id: 8,
     question: "Overall, how satisfied are you with your relationship?",
     type: "buttons",
     options: ['Not at all True', 'Completely True'],
@@ -90,7 +95,7 @@ function App() {
     e.preventDefault();
     setSubmissionState({ isSubmitting: true, error: null });
 
-    const url = "https://script.google.com/macros/s/AKfycbwTSPx1WhAfWwY8ea2ccbmYH538SWrYllWn7DHoz7c1QWNd7hNf94zOHMvoAgyVLeEEJw/exec";
+    const url = "https://script.google.com/macros/s/AKfycbwzueUVeeUopVRxIL5Ht7ibfpPxME0A1jWc5dVpIoBlAM2rQRY2pX05tbWbMRCKbovq4Q/exec";
 
     try {
       const response = await fetch(url, {
@@ -102,6 +107,7 @@ function App() {
           Name: formData.name,
           Age: formData.age,
           Phone: formData.phone,
+          Email: formData.email,
           Gender: formData.gender,
           Question1: formData.q1,
           Question2: formData.q2,
@@ -151,7 +157,19 @@ function App() {
             />
           </div>
         );
-       case "phone":
+      case "email":
+        return (
+          <div className="input-container">
+            <input
+              type="email"
+              className="text-input"
+              value={formData[currentQuestion.field]}
+              onChange={(e) => handleInputChange(currentQuestion.field, e.target.value)}
+              placeholder="Type your email"
+            />
+          </div>
+        );
+      case "phone":
         return (
           <div className="input-container">
             <PhoneInput
